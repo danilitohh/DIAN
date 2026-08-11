@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Exógena DIAN - Asistente",
+  "version": "1.0.0",
+  "description": "Continúa la consulta de información exógena después del inicio de sesión manual.",
+  "permissions": ["storage", "tabs", "downloads"],
+  "host_permissions": [
+    "https://*.dian.gov.co/*",
+    "https://*.vercel.app/*",
+    "http://localhost/*",
+    "file:///*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://*.vercel.app/*", "http://localhost/*"],
+      "js": ["appBridge.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://*.dian.gov.co/*"],
+      "js": ["dianAutomation.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}
