@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "functions": { "api/index.js": { "includeFiles": ["backend/users.json"] } },
+  "functions": { "api/index.js": { "includeFiles": "backend/users.json" } },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/app.js", "destination": "/frontend/app.js" },
