@@ -19,6 +19,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
+// Respaldo: al cargar el dashboard inyecta el clic desde el service worker.
+// Esto evita depender de que el content script sobreviva a la navegación del login.
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (changeInfo.status !== 'complete' || !/muisca\.dian\.gov\.co\/WebDashboard\/DefDashboard\.faces/i.test(tab.url || '')) return;
+  const { plan } = await chrome.storage.local.get('plan');
+  if (!plan?.active) {
+    chrome.action?.setBadgeText({ tabId, text: '!' }).catch(() => {});
+    return;
+  }
+  await notify({ type: 'DIAN_STATUS', text: 'Dashboard detectado. Abriendo información reportada por terceros…' });
+  const results = await chrome.scripting.executeScript({
+    target: { tabId, allFrames: true },
+    func: () => {
+      const clean = value => (value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+      const elements = [...document.querySelectorAll('a,button,[onclick],[role="button"],span,div')]
+        .filter(element => element.getClientRects().length && /informacion reportada por terceros|consultar informacion exogena/.test(clean(element.innerText || element.textContent)))
+        .sort((a, b) => clean(a.innerText).length - clean(b.innerText).length);
+      const target = elements[0];
+      if (!target) return false;
+      (target.closest('a,button,[onclick],[role="button"]') || target).click();
+      return true;
+    }
+  });
+  if (results.some(result => result.result === true)) {
+    plan.stage = 'opening_service'; await chrome.storage.local.set({ plan });
+    await notify({ type: 'DIAN_STATUS', text: 'Consulta de información exógena abierta.' });
+  } else {
+    await notify({ type: 'DIAN_STATUS', text: 'Dashboard detectado, pero no se encontró el enlace de información exógena.' });
+  }
+});
+
 chrome.downloads.onChanged.addListener(async delta => {
   if (delta.state?.current !== 'complete') return;
   const { plan } = await chrome.storage.local.get('plan');

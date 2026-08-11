@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Exógena DIAN - Asistente",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Continúa la consulta de información exógena después del inicio de sesión manual.",
-  "permissions": ["storage", "tabs", "downloads"],
+  "permissions": ["storage", "tabs", "downloads", "scripting"],
   "host_permissions": [
     "https://*.dian.gov.co/*",
     "https://*.vercel.app/*",
