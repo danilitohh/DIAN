@@ -7,4 +7,6 @@ app.post('/api/analyze', protect, async (req,res) => { try { res.json(await anal
 app.post('/api/dian/start', protect, (req,res) => { res.json({mensaje:'Automatización iniciada. Completa el acceso manualmente en la ventana DIAN.'}); iniciarDian(req.body.anio || new Date().getFullYear()).catch(()=>{}); }); app.get('/api/dian/status', protect, (_,res) => res.json(estadoDian()));
 app.get('/api/dian/file', protect, (req,res) => { try { const f=estadoDian().archivo; if(!f) return res.status(404).json({error:'Aún no hay archivo descargado'}); res.download(f); } catch(e) { res.status(404).json({error:e.message}); } });
 app.post('/api/build', protect, (req,res) => { try { const b=buildExcel(req.body.datos, req.body.mapeo, req.body.formato, req.body.observaciones); res.set({ 'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition':'attachment; filename="exogena_personalizada.xlsx"' }).send(b); } catch(e) { res.status(400).json({error:e.message}); } });
-app.get('*', (_,res) => res.sendFile(path.join(__dirname,'..','frontend','index.html'))); app.listen(process.env.PORT || 3000, () => console.log(`Aplicación DIAN en http://localhost:${process.env.PORT || 3000}`));
+app.get('*', (_,res) => res.sendFile(path.join(__dirname,'..','frontend','index.html')));
+if (require.main === module) app.listen(process.env.PORT || 3000, () => console.log(`Aplicación DIAN en http://localhost:${process.env.PORT || 3000}`));
+module.exports = app;

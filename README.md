@@ -14,3 +14,7 @@ Usuario inicial: `admin` / `admin123`.
 El backend protege todas las operaciones con JWT. Si no hay clave Groq, la aplicación genera un mapeo local conservando los nombres de columnas, para permitir probar el flujo completo.
 
 La descarga asistida abre un navegador visible; las credenciales y CAPTCHA se introducen manualmente y no se almacenan. El Excel descargado queda en `descargas/`.
+
+## Despliegue en Vercel
+
+Vercel sirve el frontend y expone el backend mediante `/api`. Configura `JWT_SECRET` y `GROQ_API_KEY` en las variables de entorno del proyecto. La automatización Playwright de DIAN requiere una ventana visible y, por tanto, debe ejecutarse localmente; Vercel puede alojar la carga, análisis y generación de Excel, pero no puede abrir una ventana en el computador del usuario.
