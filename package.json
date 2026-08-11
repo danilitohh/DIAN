@@ -2,6 +2,7 @@
   "name": "proyecto-exogena",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "start": "node backend/server.js", "dev": "node --watch backend/server.js" },
-  "dependencies": { "bcryptjs": "^2.4.3", "cors": "^2.8.5", "dotenv": "^16.4.5", "express": "^4.19.2", "jsonwebtoken": "^9.0.2", "multer": "^2.0.2", "playwright": "^1.55.0", "xlsx": "^0.18.5" }
+  "scripts": { "build": "tailwindcss -i ./frontend/input.css -o ./frontend/tailwind.css --minify", "start": "node backend/server.js", "dev": "node --watch backend/server.js" },
+  "dependencies": { "bcryptjs": "^2.4.3", "cors": "^2.8.5", "dotenv": "^16.4.5", "express": "^4.19.2", "jsonwebtoken": "^9.0.2", "multer": "^2.0.2", "playwright": "^1.55.0", "xlsx": "^0.18.5" },
+  "devDependencies": { "tailwindcss": "^3.4.17" }
 }

@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/app.js", "destination": "/frontend/app.js" },
+    { "source": "/tailwind.css", "destination": "/frontend/tailwind.css" },
     { "source": "/styles.css", "destination": "/frontend/styles.css" },
     { "source": "/", "destination": "/frontend/index.html" }
   ]

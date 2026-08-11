@@ -1,0 +1,4 @@
+/* Entrada de Tailwind para generar el CSS de producción. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
